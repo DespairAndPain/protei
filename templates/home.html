@@ -3,8 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <style>
+        body {
+            margin-top: 50px;
+        }
+        input {
+            margin-top: 20px;
+        }
+        h1 {
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <form method="POST" action="/"  class="form-horizontal">
+            <input type="text" class="form-control" name="city" placeholder="Введите название города">
+            <input type="text" class="form-control" name="street" placeholder="Введите название улицы">
+            <input type="text" class="form-control" name="house_number" placeholder="Введите номер дома">
+            <input type="submit" value="Test" class="btn btn-primary">
+        </form>
+    </div>
 
+    {% if result == 1 %}
+        <hr>
+        <div class="container">
+            <h3>Результаты:</h3>
+            <table class="table table-striped">
+                <tr class="active">
+                    <thead>
+                        <th>Название параметра</th>
+                        <th>Заданные значения</th>
+                        <th>Полученные значения</th>
+                    </thead>
+                </tr>
+                <tbody>
+                    <tr>
+                        <th>Город</th>
+                        <td>{{ old_city }}</td>
+                        <td>{{ new_city }}</td>
+                    </tr>
+                    <tr>
+                        <th>Улица</th>
+                        <td>{{ old_street }}</td>
+                        <td>{{ new_street }}</td>
+                    </tr>
+                    <tr>
+                        <th>Номр дома</th>
+                        <td>{{ old_number }}</td>
+                        <td>{{ new_number }}</td>
+                    </tr>
+                    <tr>
+                        <th>Время получения данных адрес>>координаты</th>
+                        <th>{{ time_1 }} с</th>
+                    </tr>
+                    <tr>
+                        <th>Время получения данных координаты>>адрес</th>
+                        <th>{{ time_2 }} с</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
 </body>
 </html>
