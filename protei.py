@@ -30,8 +30,8 @@ def get_data():
 
     list_results = []
     for root, dirs, files in os.walk(UPLOAD_FOLDER):
-        list_results.append(app_console.main(files))
-
+        list_results.append([files, app_console.main(files)])
+    print(list_results)
     return render_template('home.html', result=1, items=list_results)
 
 

@@ -34,35 +34,26 @@
             <table class="table table-striped">
                 <tr class="active">
                     <thead>
-                        <th>Название параметра</th>
-                        <th>Заданные значения</th>
-                        <th>Полученные значения</th>
+                        <th>ID теста</th>
+                        <th>Статус</th>
+                        <th>Время отклика от сервера адрес>>координаты</th>
+                        <th>Время отклика от сервера координаты>>адрес</th>
                     </thead>
                 </tr>
                 <tbody>
+                {% for item in items %}
                     <tr>
-                        <th>Город</th>
-                        <td>{{ old_city }}</td>
-                        <td>{{ new_city }}</td>
+                        Результаты для файла: {{ item[0][0]}}
                     </tr>
-                    <tr>
-                        <th>Улица</th>
-                        <td>{{ old_street }}</td>
-                        <td>{{ new_street }}</td>
-                    </tr>
-                    <tr>
-                        <th>Номр дома</th>
-                        <td>{{ old_number }}</td>
-                        <td>{{ new_number }}</td>
-                    </tr>
-                    <tr>
-                        <th>Время получения данных адрес>>координаты</th>
-                        <th>{{ time_1 }} с</th>
-                    </tr>
-                    <tr>
-                        <th>Время получения данных координаты>>адрес</th>
-                        <th>{{ time_2 }} с</th>
-                    </tr>
+                    {% for line in item[1] %}
+                        <tr>
+                            <th>{{ line[0] }}</th>
+                            <td>{{ line[1] }}</td>
+                            <td>{{ line[2] }}</td>
+                            <td>{{ line[3] }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
                 </tbody>
             </table>
         </div>

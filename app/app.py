@@ -10,7 +10,7 @@ import os
 def main(file_name):
     result = []
 
-    file_path = os.path.dirname(os.path.abspath(__file__))+'/../static/'+file_name
+    file_path = os.path.dirname(os.path.abspath(__file__))+'/../static/test_data/'+file_name[0]
     rb = xlrd.open_workbook(file_path, formatting_info=True)
     sheet = rb.sheet_by_index(0)
 
@@ -19,6 +19,7 @@ def main(file_name):
         if row[0] in range(1, 100, 1):
             result.append(test_data(row))
     print(result)
+    return result
 
 
 def test_data(input_list):
@@ -66,21 +67,13 @@ def test_data(input_list):
         new_house_number = address['house_number']
         new_street = address['road']
         new_city = address['city']
-        print('========')
-        print(input_list[4])
-        print(input_list[5])
-        print(input_list[6])
-        print(new_house_number)
-        print(new_street)
-        print(new_city)
-        print('========')
         if len(j) == 0:
             return [input_list[0], 'Null response on step 2']
 
     if new_city == input_list[4] and new_street == input_list[5] and int(new_house_number) == int(input_list[6]):
-        result_status = [input_list[0], 'done']
+        result_status = 'done'
     else:
-        result_status = [input_list[0], 'Wrong response']
+        result_status = 'Wrong response'
 
     result = [input_list[0], result_status, round(time_1, 3), round(time_2, 3)]
     return result
