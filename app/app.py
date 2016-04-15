@@ -19,6 +19,12 @@ def main(file_name):
         if row[0] in range(1, 100, 1):
             result.append(test_data(row))
     print(result)
+    for i in result:
+        print('==========')
+        print('ID теста: '+str(int(i[0])))
+        print('Статус выполнения: ' + i[1])
+        print('Время отклика сервера адрес>>координаты: ' + str(i[2]))
+        print('Время отклика сервера координаты>>адрес: ' + str(i[3]))
     return result
 
 
@@ -81,4 +87,4 @@ def test_data(input_list):
 
 
 if __name__ == "__main__":
-   main('test_data.xls')
+   main(['test_data.xls'])
