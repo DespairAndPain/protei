@@ -2,30 +2,30 @@ from transliterate import translit
 import urllib.request
 import urllib.parse
 import json
-import re
 import time
+import xlrd
+import os
 
 
-def main():
-    input_string_values = input('Введите город, улицу, номер дома через запятую: ')
-    test_data(input_string_values)
+def main(file_name):
+    result = []
+
+    file_path = os.path.dirname(os.path.abspath(__file__))+'/../static/'+file_name
+    rb = xlrd.open_workbook(file_path, formatting_info=True)
+    sheet = rb.sheet_by_index(0)
+
+    for rownum in range(sheet.nrows):
+        row = sheet.row_values(rownum)
+        if row[0] in range(1, 100, 1):
+            result.append(test_data(row))
+    print(result)
 
 
-def test_data(input_string):
-    # убрать пробелы и разбиты на состовляющие
-    input_data = re.sub(' ', '', input_string).split(',')
-    input_city = input_data[0]
-    input_street = input_data[1]
-    input_house_number = input_data[2]
+def test_data(input_list):
 
-    input_values = re.sub(' ', '', input_string)
-    # транслитерация
-    t_input_values = translit(input_values, 'ru', reversed=True)
-    input_list = t_input_values.split(',')
-
-    city = input_list[0]
-    street = input_list[1]
-    house_number = input_list[2]
+    city = translit(input_list[1], 'ru', reversed=True)
+    street = translit(input_list[2], 'ru', reversed=True)
+    house_number = str(int(input_list[3]))
 
     address = city+'/'+street+'/'+house_number
     q = address
@@ -36,6 +36,7 @@ def test_data(input_string):
     print(url)
     req = urllib.request.Request(url, headers={'User-Agent': 'super'})
     _start_time = time.time()
+
     with urllib.request.urlopen(req) as res:
         time_1 = time.time() - _start_time
         print("Время выполнения GET запроса: {:.3f} с".format(time.time() - _start_time))
@@ -47,6 +48,8 @@ def test_data(input_string):
             print('Out of range')
         except Exception:
             print(Exception)
+        if len(j) == 0:
+            return [input_list[0], 'Null response on step 1']
 
     params = urllib.parse.urlencode({'lat': lat, 'lon': lon, 'format': 'json'})
     url = "http://nominatim.openstreetmap.org/reverse?%s" % params
@@ -63,21 +66,26 @@ def test_data(input_string):
         new_house_number = address['house_number']
         new_street = address['road']
         new_city = address['city']
+        print('========')
+        print(input_list[4])
+        print(input_list[5])
+        print(input_list[6])
+        print(new_house_number)
+        print(new_street)
+        print(new_city)
+        print('========')
+        if len(j) == 0:
+            return [input_list[0], 'Null response on step 2']
 
-    print('=====================')
-    print('Адрес полученный:')
-    print('Город: '+new_city)
-    print('Улица: '+new_street)
-    print('Номер дома: '+new_house_number)
-    print('=====================')
-    print('Адрес заданный:')
-    print('Город: '+input_city)
-    print('Улица: '+input_street)
-    print('Номер дома: '+input_house_number)
+    if new_city == input_list[4] and new_street == input_list[5] and int(new_house_number) == int(input_list[6]):
+        result_status = [input_list[0], 'done']
+    else:
+        result_status = [input_list[0], 'Wrong response']
 
-    return [new_city, new_street, new_house_number, input_city, input_street, input_house_number, round(time_1, 3),
-            round(time_2, 3)]
+    result = [input_list[0], result_status, round(time_1, 3), round(time_2, 3)]
+    return result
+
 
 
 if __name__ == "__main__":
-   main()
+   main('test_data.xls')
